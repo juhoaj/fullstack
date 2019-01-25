@@ -18,14 +18,11 @@ const Content = (props) => {
     )
 }
 
-const Total = () => {
+const Total = (props) => {
     return (
-        <div>
-        </div>
+        <p>yhteensä {props.sum} tehtävää</p>
     )
 }
-
-
 
 
 const App = () => {
@@ -48,7 +45,7 @@ const App = () => {
                 part3={part3}  
                 exercises3={exercises3}  
             />
-            <p>yhteensä {exercises1 + exercises2 + exercises3} tehtävää</p>
+            <Total sum ={exercises1 + exercises2 + exercises3} />
         </div>
     )
 }
