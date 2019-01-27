@@ -1,6 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+
+
+const Hello = (props) => {
+    const { name, age } = props
+    const bornYear = () => new Date().getFullYear() - age
+  
+    return (
+      <div>
+        <p>Hello {name}, you are {props.age} years old</p>
+        <p>So you were probably born {bornYear()}</p>
+      </div>
+    )
+  }
+
 const Header = (props) => {
     return (
         <h1>{props.course}</h1>
