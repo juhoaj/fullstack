@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-
-
-// const randomi = Math.floor(Math.random() * (5))
-
-
-const randomi = () => { return  Math.floor(Math.random() * (5)) }
-
+const random = () => { return  Math.floor(Math.random() * (5)) }
 
 const App = (props) => {
-    const [selected, setSelected] = useState(randomi)
-    const nextClicked = () =>  setSelected(randomi)
+    const [selected, setSelected] = useState(random)
+    const nextClicked = () =>  setSelected(random)
+    const [points, setPoints] = useState(new Array(6).fill(0))
+    const vote = () => setPoints(points, points[selected]+=1)
 
     return (
         <div>
             <p>{props.anecdotes[selected]}</p>
+            <button onClick={ vote } >
+                vote
+            </button>
             <button onClick={ nextClicked }>
                 next anecdote
             </button>
+            <p>{points}</p>
         </div>
     )
 }
