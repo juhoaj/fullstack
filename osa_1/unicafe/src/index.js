@@ -39,9 +39,11 @@ const Statistic = ({name, value}) => {
     )
 }
 
-const Button = (props) => {
-    
-}
+const Button = ({onClick, text}) => (
+    <button onClick={onClick}>
+      {text}
+    </button>
+  )
 
 
 const App = () => {
@@ -53,11 +55,11 @@ const App = () => {
   return (
     <div>
         <h3>Anna palautetta</h3>
-        <button onClick={() => setGood(good + 1)}>hyvä</button>
-        <button onClick={() => setNeutral(neutral + 1)}>neutraali</button>
-        <button onClick={() => setBad(bad + 1)}>huono</button>
-        <h3>Statistiikka</h3>
+        <Button onClick={() => setGood(good + 1)} text='hyvä'/>
+        <Button onClick={() => setNeutral(neutral + 1)} text='neutraali'/>
+        <Button onClick={() => setBad(bad + 1)} text='huono'/>
 
+        <h3>Statistiikka</h3>
         <Statistics 
             good={good}
             neutral={neutral}
