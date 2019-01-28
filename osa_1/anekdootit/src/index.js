@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom'
 
 const random = () => { return  Math.floor(Math.random() * (5)) }
 
+
 const App = (props) => {
     const [selected, setSelected] = useState(random)
     const nextClicked = () =>  setSelected(random)
     const [points, setPoints] = useState(new Array(6).fill(0))
     const vote = () => setPoints(points, points[selected]+=1)
+    const mostVotes = points.indexOf(Math.max.apply( Math, points ) )
 
     return (
         <div>
+            <h3>Anecdote of the day</h3>
             <p>{props.anecdotes[selected]}</p>
             <button onClick={ vote } >
                 vote
@@ -18,7 +21,8 @@ const App = (props) => {
             <button onClick={ nextClicked }>
                 next anecdote
             </button>
-            <p>{points}</p>
+            <h3>Anecdote with most votes</h3>
+            <p>{props.anecdotes[mostVotes]}</p>
         </div>
     )
 }
