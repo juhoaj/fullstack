@@ -1,12 +1,42 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Statistics = (props) => {
+const Statistics = ({good, neutral, bad}) => {
 
+    let total = good + neutral + bad
+    let keskiarvo = (good-bad) / total
+    let positiivisia = good / total * 100
+
+    if (total === 0) {
+        return (
+            <p>Ei yhtään palautetta annettu</p>
+        )
+    }
+
+    return (
+        
+        <div>
+            <table>
+                <tbody>
+                    <Statistic name='hyvä' value={good}/>
+                    <Statistic name='neutraali' value={neutral}/>
+                    <Statistic name='huono' value={bad}/>
+                    <Statistic name='yhteensä' value={total}/>
+                    <Statistic name='keskiarvo' value={keskiarvo}/>
+                    <Statistic name='positiivisia' value={positiivisia}/>
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
-const Statistic = (props) => {
-
+const Statistic = ({name, value}) => {
+    return (
+        <tr>
+            <td>{name}:&nbsp;</td>
+            <td>{value}</td>
+        </tr>
+    )
 }
 
 const Button = (props) => {
@@ -16,9 +46,9 @@ const Button = (props) => {
 
 const App = () => {
   // tallenna napit omaan tilaansa
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  let [good, setGood] = useState(0)
+  let [neutral, setNeutral] = useState(0)
+  let [bad, setBad] = useState(0)
 
   return (
     <div>
@@ -27,30 +57,12 @@ const App = () => {
         <button onClick={() => setNeutral(neutral + 1)}>neutraali</button>
         <button onClick={() => setBad(bad + 1)}>huono</button>
         <h3>Statistiikka</h3>
-        <tr>
-            <td>hyvä: </td>
-            <td>{good}</td>
-        </tr>
-        <tr>
-            <td>neutraali: </td>
-            <td>{neutral}</td>
-        </tr>
-        <tr>
-            <td>huono: </td>
-            <td>{bad}</td>
-        </tr>      
-        <tr>
-            <td>yhteensä: </td>
-            <td>{good+neutral+bad}</td>
-        </tr>    
-        <tr>
-            <td>keskiarvo: </td>
-            <td>{((good*1)+(bad*-1))/(good+neutral+bad)}</td>
-        </tr>  
-        <tr>
-            <td>positiivisia: </td>
-            <td>{good/(good+neutral+bad)*100}%</td>
-        </tr>     
+
+        <Statistics 
+            good={good}
+            neutral={neutral}
+            bad={bad}
+        />     
     </div>
   )
 }
