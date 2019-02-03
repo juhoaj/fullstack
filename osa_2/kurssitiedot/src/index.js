@@ -36,30 +36,30 @@ const Course = ({course}) => (
         {console.log('name', course.name)}
         <Header title = {course.name}/>
         <Parts parts ={course.parts}/>
+        <Total parts = {course.parts}/>
     </div>
 )
 
 
-const Header = (props) => (
-    <h1>{props.title}</h1>
+const Header = ({title}) => (
+    <h1>{title}</h1>
 )
 
 const Parts = ({parts}) => parts.map(part =>
-        <p key={part.id}>
-            {part.name} {part.exercises}
+    <p key={part.id}>
+        {part.name} {part.exercises}
+    </p>
+)
 
-        </p>
-    
-    
-    )
 
-/*
-const Total = (props) => {
+const Total = ({parts}) => {
+    const summa = parts.reduce((a, b) => a + b.exercises, 0);
+    console.log(summa)
     return (
-        <p>yhteensä {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises} tehtävää</p>
+        <p>yhteensä {summa} tehtävää</p>
     )
 }
-*/
+
 
 
 
