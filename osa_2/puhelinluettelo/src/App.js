@@ -3,20 +3,29 @@ import React, { useState } from 'react'
 const App = () => {
     const [persons, setPersons] = useState([
         { name: 'Arto Hellas',
-         id: 1
+          number: '123',
+          id: 1
         }
     ])
     const [newName, setNewName] = useState('')
 
-    const handlePersonChange = (event) => {
-        console.log(event.target.value)
+    const [newNumber, setNewNumber] = useState('')
+
+    const handleNameChange = (event) => {
+        // console.log(event.target.value)
         setNewName(event.target.value)
+    } 
+
+    const handleNumberChange = (event) => {
+        // console.log(event.target.value)
+        setNewNumber(event.target.value)
     } 
 
     const addPerson = (event) => {
         event.preventDefault()
         const personObject = {
             name: newName,
+            number: newNumber,
             id: persons.length + 1,
         }
 
@@ -32,9 +41,9 @@ const App = () => {
         persons.filter(elementti => elementti.name === newName).length > 0
             ? window.alert(`${newName} on jo luettelossa`)
             : setPersons(persons.concat(personObject))
-
         
         setNewName('')
+        setNewNumber('')
     }
 
     return (
@@ -42,10 +51,16 @@ const App = () => {
             <h2>Puhelinluettelo</h2>
             <form onSubmit={addPerson}>
                 <div>
-                    nimi:
+                    <label>nimi:</label>
                     <input
                         value={newName}
-                        onChange={handlePersonChange}
+                        onChange={handleNameChange}
+                    />
+                    <br/>
+                    <label>numero:</label>
+                    <input
+                        value={newNumber}
+                        onChange={handleNumberChange}
                     />
                 </div>
                 <div>
@@ -68,7 +83,7 @@ const Persons = ({ persons }) => persons.map(person =>
 
 const Person  = ({ person }) => (
     <p>
-        {person.name}
+        {person.name}, {person.number}
     </p>
 )
 
