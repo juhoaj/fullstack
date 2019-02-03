@@ -20,7 +20,20 @@ const App = () => {
             id: persons.length + 1,
         }
 
-        setPersons(persons.concat(personObject))
+        /*
+        console.log(persons.forEach(e => {
+            console.log(e.name, 'tallessa')
+            e.name === newName
+            ? console.log('sama')
+            : console.log('ei')
+        }))
+        */
+
+        persons.filter(elementti => elementti.name === newName).length > 0
+            ? window.alert(`${newName} on jo luettelossa`)
+            : setPersons(persons.concat(personObject))
+
+        
         setNewName('')
     }
 
