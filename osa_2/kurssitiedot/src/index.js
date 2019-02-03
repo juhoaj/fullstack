@@ -58,7 +58,7 @@ const Courses = ({ courses }) => courses.map(course =>
 )
 
 const Course = ({ course }) => (
-    <div>
+    <div key={course.id}>
         {console.log('name', course.name)}
         <Header title={course.name} />
         <Parts parts={course.parts} />
