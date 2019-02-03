@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 
 const App = () => {
     const [persons, setPersons] = useState([
-        { name: 'Arto Hellas',
-          number: '123',
-          id: 1
-        }
+        { name: 'Arto Hellas', number: '040-123456', id: 1 },
+        { name: 'Martti Tienari', number: '040-123456', id: 2 },
+        { name: 'Arto Järvinen', number: '040-123456', id: 3 },
+        { name: 'Lea Kutvonen', number: '040-123456', id: 4 }
     ])
-    const [newName, setNewName] = useState('')
 
+    const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [search, setSearch] = useState('')
 
     const handleNameChange = (event) => {
         // console.log(event.target.value)
@@ -19,6 +20,11 @@ const App = () => {
     const handleNumberChange = (event) => {
         // console.log(event.target.value)
         setNewNumber(event.target.value)
+    } 
+
+    const handleSearchChange = (event) => {
+        console.log(event.target.value)
+        setSearch(event.target.value)
     } 
 
     const addPerson = (event) => {
@@ -49,16 +55,21 @@ const App = () => {
     return (
         <div>
             <h2>Puhelinluettelo</h2>
+            <Input
+                value={search}
+                onChange={handleSearchChange}
+            />
+            <h3>lisää uusi</h3>
             <form onSubmit={addPerson}>
                 <div>
                     <label>nimi:</label>
-                    <input
+                    <Input
                         value={newName}
                         onChange={handleNameChange}
                     />
                     <br/>
                     <label>numero:</label>
-                    <input
+                    <Input
                         value={newNumber}
                         onChange={handleNumberChange}
                     />
@@ -68,11 +79,18 @@ const App = () => {
                 </div>
             </form>
             <h2>Numerot</h2>
-            <Persons persons={persons}/>
+            <Persons persons={persons.filter(elementti => elementti.name.includes(search))}/>
     </div>
     )
 
 }
+
+const Input = ({value, onChange}) => (
+    <input
+        value={value}
+        onChange={onChange}
+    />
+)
 
 const Persons = ({ persons }) => persons.map(person =>
     <Person 
