@@ -1,31 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456', id: 1 },
-        { name: 'Martti Tienari', number: '040-123456', id: 2 },
-        { name: 'Arto Järvinen', number: '040-123456', id: 3 },
-        { name: 'Lea Kutvonen', number: '040-123456', id: 4 }
-    ])
 
+
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
 
+   const hook = () => {
+    console.log('effect')
+    axios
+        .get('http://localhost:3001/persons')
+        .then(response => {
+            console.log('promise fulfilled')
+            setPersons(response.data)
+        })
+    }
+
+    useEffect(hook, [])
+
+
     const handleNameChange = (event) => {
         // console.log(event.target.value)
         setNewName(event.target.value)
-    } 
+    }
 
     const handleNumberChange = (event) => {
         // console.log(event.target.value)
         setNewNumber(event.target.value)
-    } 
+    }
 
     const handleSearchChange = (event) => {
         console.log(event.target.value)
         setSearch(event.target.value)
-    } 
+    }
 
     const addPerson = (event) => {
         event.preventDefault()
@@ -47,7 +57,7 @@ const App = () => {
         persons.filter(elementti => elementti.name === newName).length > 0
             ? window.alert(`${newName} on jo luettelossa`)
             : setPersons(persons.concat(personObject))
-        
+
         setNewName('')
         setNewNumber('')
     }
@@ -67,7 +77,7 @@ const App = () => {
                         value={newName}
                         onChange={handleNameChange}
                     />
-                    <br/>
+                    <br />
                     <label>numero:</label>
                     <Input
                         value={newNumber}
@@ -79,13 +89,13 @@ const App = () => {
                 </div>
             </form>
             <h2>Numerot</h2>
-            <Persons persons={persons.filter(elementti => elementti.name.includes(search))}/>
-    </div>
+            <Persons persons={persons.filter(elementti => elementti.name.includes(search))} />
+        </div>
     )
 
 }
 
-const Input = ({value, onChange}) => (
+const Input = ({ value, onChange }) => (
     <input
         value={value}
         onChange={onChange}
@@ -93,13 +103,13 @@ const Input = ({value, onChange}) => (
 )
 
 const Persons = ({ persons }) => persons.map(person =>
-    <Person 
+    <Person
         key={person.id}
-        person = {person}
+        person={person}
     />
 )
 
-const Person  = ({ person }) => (
+const Person = ({ person }) => (
     <p>
         {person.name}, {person.number}
     </p>
