@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 // import axios from 'axios'
 import personService from './services/persons'
+import './App.css';
 
 const App = () => {
 
     const [persons, setPersons] = useState([])
     const [search, setSearch] = useState('')
+    const [message, setMessage] = useState('hep')
 
     const hook = () => {
-        console.log('effect')
+        // console.log('effect')
         personService
             .getAll()
             .then(initialPersons => {
@@ -19,26 +21,25 @@ const App = () => {
 
     useEffect(hook, [])
 
-
-
     const handleSearchChange = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setSearch(event.target.value)
     }
 
-
-
     return (
         <div>
+            <Notification message={message} />
             <h2>Puhelinluettelo</h2>
             <Input
                 value={search}
                 onChange={handleSearchChange}
+                label='rajaa näytettäviä'
             />
             <h3>lisää uusi</h3>
             <AddPerson 
                 persons={persons} 
                 setPersons={setPersons}
+                setMessage={setMessage}
             />
             <h2>Numerot</h2>
             <Persons 
@@ -49,11 +50,15 @@ const App = () => {
     )
 }
 
-const Input = ({ value, onChange }) => (
-    <input
-        value={value}
-        onChange={onChange}
-    />
+const Input = ({ value, onChange, label }) => (
+    <div>
+        <label>{label} </label>
+        <input
+            value={value}
+            onChange={onChange}
+        />
+    </div>
+    
 )
 
 const Persons = ({ persons, hook }) => persons.map(person =>
@@ -64,7 +69,7 @@ const Persons = ({ persons, hook }) => persons.map(person =>
     />
 )
 
-const AddPerson = ({persons, setPersons}) => {
+const AddPerson = ({persons, setPersons, setMessage}) => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -86,13 +91,17 @@ const AddPerson = ({persons, setPersons}) => {
             // id: persons.length + 1,
         }
 
-        persons.filter(elementti => elementti.name === newName).length > 0
-            ? window.alert(`${newName} on jo luettelossa`)
-            : personService
+        if (persons.filter(elementti => elementti.name === newName).length > 0) {
+            window.alert(`${newName} on jo luettelossa`)
+        } else {
+             personService
                 .create(personObject)
                 .then(returnedNote => {
                     setPersons(persons.concat(returnedNote))
                 })
+            
+            
+        }        
         setNewName('')
         setNewNumber('')
     }
@@ -146,6 +155,17 @@ const Person = ({ person, hook }) => {
     // 
 }
 
+const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+  
+    return (
+      <div className="notification">
+        {message}
+      </div>
+    )
+  }
 
 
 export default App
