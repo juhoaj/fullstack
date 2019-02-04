@@ -8,7 +8,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [persons, setPersons] = useState([])
     const [search, setSearch] = useState('')
-    const [message, setMessage] = useState('hep')
+    const [message, setMessage] = useState(null)
 
 
     const handleSearchChange = (event) => {
@@ -51,26 +51,36 @@ const App = () => {
         if (persons.filter(elementti => elementti.name === newName).length > 0) {
             window.alert(`${newName} on jo luettelossa`)
         } else {
-             personService
+            personService
                 .create(personObject)
                 .then(returnedNote => {
                     setPersons(persons.concat(returnedNote))
-                })            
-        }        
+                })
+            setMessage(
+                `${newName} lisätty`
+            )
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
+        }
         setNewName('')
         setNewNumber('')
     }
 
-    const deletePerson = (id) => {
-        
-
-        if (window.confirm("Poistetaanko")) {
+    const deletePerson = (id, name) => {
+        if (window.confirm("Poistetaanko " + name)) {
             personService
                 .remove(id)
                 .then(
                     // setPersons(persons.splice(id, 1))
-                    
+                    hook
                 )
+                setMessage(
+                    `${name} poistettu`
+                )
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
         }
     }
 
@@ -85,8 +95,8 @@ const App = () => {
             />
             <h2>Numerot</h2>
             <h3>lisää uusi</h3>
-            <AddPerson 
-                persons={persons} 
+            <AddPerson
+                persons={persons}
                 setPersons={setPersons}
                 newName={newName}
                 handleNameChange={handleNameChange}
@@ -96,8 +106,8 @@ const App = () => {
 
             />
 
-            <Persons 
-                persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} 
+            <Persons
+                persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))}
                 deletePerson={deletePerson}
             />
         </div>
@@ -112,7 +122,7 @@ const Input = ({ value, onChange, label }) => (
             onChange={onChange}
         />
     </div>
-    
+
 )
 
 const Persons = ({ persons, deletePerson }) => persons.map(person =>
@@ -123,7 +133,7 @@ const Persons = ({ persons, deletePerson }) => persons.map(person =>
     />
 )
 
-const AddPerson = ({newName, handleNameChange, newNumber, handleNumberChange, addPerson}) => {
+const AddPerson = ({ newName, handleNameChange, newNumber, handleNumberChange, addPerson }) => {
     return (
         <form onSubmit={addPerson}>
             <div>
@@ -148,10 +158,10 @@ const AddPerson = ({newName, handleNameChange, newNumber, handleNumberChange, ad
 
 
 const Person = ({ person, deletePerson }) => {
-    
+
     const deleteEvent = (event) => {
-        event.preventDefault() 
-        deletePerson(person.id)
+        event.preventDefault()
+        deletePerson(person.id, person.name)
     }
 
     return (
@@ -159,20 +169,20 @@ const Person = ({ person, deletePerson }) => {
             {person.name}, {person.number} <button onClick={deleteEvent}>poista</button>
         </p>
     )
-    
+
 }
 
 const Notification = ({ message }) => {
     if (message === null) {
-      return null
+        return null
     }
-  
+
     return (
-      <div className="notification">
-        {message}
-      </div>
+        <div className="notification">
+            {message}
+        </div>
     )
-  }
+}
 
 
 export default App
