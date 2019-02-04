@@ -4,10 +4,29 @@ import personService from './services/persons'
 import './App.css';
 
 const App = () => {
-
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
     const [persons, setPersons] = useState([])
     const [search, setSearch] = useState('')
     const [message, setMessage] = useState('hep')
+
+
+    const handleSearchChange = (event) => {
+        // console.log(event.target.value)
+        setSearch(event.target.value)
+    }
+
+    const handleNameChange = (event) => {
+        // console.log(event.target.value)
+        setNewName(event.target.value)
+    }
+
+    const handleNumberChange = (event) => {
+        // console.log(event.target.value)
+        setNewNumber(event.target.value)
+    }
+
+
 
     const hook = () => {
         // console.log('effect')
@@ -18,12 +37,28 @@ const App = () => {
                 setPersons(initialPersons)
             })
     }
-
     useEffect(hook, [])
 
-    const handleSearchChange = (event) => {
-        // console.log(event.target.value)
-        setSearch(event.target.value)
+
+
+    const addPerson = (event) => {
+        event.preventDefault()
+        const personObject = {
+            name: newName,
+            number: newNumber,
+            // id: persons.length + 1,
+        }
+        if (persons.filter(elementti => elementti.name === newName).length > 0) {
+            window.alert(`${newName} on jo luettelossa`)
+        } else {
+             personService
+                .create(personObject)
+                .then(returnedNote => {
+                    setPersons(persons.concat(returnedNote))
+                })            
+        }        
+        setNewName('')
+        setNewNumber('')
     }
 
     return (
@@ -35,13 +70,19 @@ const App = () => {
                 onChange={handleSearchChange}
                 label='rajaa näytettäviä'
             />
+            <h2>Numerot</h2>
             <h3>lisää uusi</h3>
             <AddPerson 
                 persons={persons} 
                 setPersons={setPersons}
-                setMessage={setMessage}
+                newName={newName}
+                handleNameChange={handleNameChange}
+                newNumber={newNumber}
+                handleNumberChange={handleNumberChange}
+                addPerson={addPerson}
+
             />
-            <h2>Numerot</h2>
+
             <Persons 
                 persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} 
                 hook={hook}
@@ -69,45 +110,9 @@ const Persons = ({ persons, hook }) => persons.map(person =>
     />
 )
 
-const AddPerson = ({persons, setPersons, setMessage}) => {
-
-    const [newName, setNewName] = useState('')
-    const [newNumber, setNewNumber] = useState('')
-
-    const handleNameChange = (event) => {
-        // console.log(event.target.value)
-        setNewName(event.target.value)
-    }
-
-    const handleNumberChange = (event) => {
-        // console.log(event.target.value)
-        setNewNumber(event.target.value)
-    }
-    const addEvent = (event) => {
-        event.preventDefault()
-        const personObject = {
-            name: newName,
-            number: newNumber,
-            // id: persons.length + 1,
-        }
-
-        if (persons.filter(elementti => elementti.name === newName).length > 0) {
-            window.alert(`${newName} on jo luettelossa`)
-        } else {
-             personService
-                .create(personObject)
-                .then(returnedNote => {
-                    setPersons(persons.concat(returnedNote))
-                })
-            
-            
-        }        
-        setNewName('')
-        setNewNumber('')
-    }
-
+const AddPerson = ({persons, newName, handleNameChange, newNumber, handleNumberChange, addPerson}) => {
     return (
-        <form onSubmit={addEvent}>
+        <form onSubmit={addPerson}>
             <div>
                 <label>nimi:</label>
                 <Input
@@ -149,7 +154,7 @@ const Person = ({ person, hook }) => {
     
     return (
         <p>
-            {person.name}, {person.number} <DeletePerson id={person.id} hook={hook}/>
+            {person.name}, {person.number} <DeletePerson id={person.id} hook={hook} />
         </p>
     )
     // 
