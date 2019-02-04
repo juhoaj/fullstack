@@ -132,7 +132,6 @@ const Input = ({ value, onChange, label }) => (
 
 
 const List = ({ content }) => (
-    console.log({content}),
     <ul>
         {content.map(item =>
             <ListItem

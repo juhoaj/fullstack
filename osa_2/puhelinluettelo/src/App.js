@@ -33,8 +33,8 @@ const App = () => {
     }
 
     const handleSearchChange = (event) => {
-        console.log(event.target.value)
-        setSearch(event.target.value)
+        // console.log(event.target.value)
+        setSearch(event.target.value.toUpperCase())
     }
 
     const addPerson = (event) => {
@@ -42,7 +42,7 @@ const App = () => {
         const personObject = {
             name: newName,
             number: newNumber,
-            id: persons.length + 1,
+            // id: persons.length + 1,
         }
 
         /*
@@ -56,7 +56,12 @@ const App = () => {
 
         persons.filter(elementti => elementti.name === newName).length > 0
             ? window.alert(`${newName} on jo luettelossa`)
-            : setPersons(persons.concat(personObject))
+            // : setPersons(persons.concat(personObject))
+            : axios
+                .post('http://localhost:3001/persons', personObject)
+                .then(response => {
+                    setPersons(persons.concat(response.data))
+                                    })
 
         setNewName('')
         setNewNumber('')
@@ -89,7 +94,7 @@ const App = () => {
                 </div>
             </form>
             <h2>Numerot</h2>
-            <Persons persons={persons.filter(elementti => elementti.name.includes(search))} />
+            <Persons persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search))} />
         </div>
     )
 
