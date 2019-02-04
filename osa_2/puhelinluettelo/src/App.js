@@ -61,6 +61,19 @@ const App = () => {
         setNewNumber('')
     }
 
+    const deletePerson = (id) => {
+        
+
+        if (window.confirm("Poistetaanko")) {
+            personService
+                .remove(id)
+                .then(
+                    // setPersons(persons.splice(id, 1))
+                    
+                )
+        }
+    }
+
     return (
         <div>
             <Notification message={message} />
@@ -85,7 +98,7 @@ const App = () => {
 
             <Persons 
                 persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} 
-                hook={hook}
+                deletePerson={deletePerson}
             />
         </div>
     )
@@ -102,15 +115,15 @@ const Input = ({ value, onChange, label }) => (
     
 )
 
-const Persons = ({ persons, hook }) => persons.map(person =>
+const Persons = ({ persons, deletePerson }) => persons.map(person =>
     <Person
         key={person.id}
         person={person}
-        hook={hook}
+        deletePerson={deletePerson}
     />
 )
 
-const AddPerson = ({persons, newName, handleNameChange, newNumber, handleNumberChange, addPerson}) => {
+const AddPerson = ({newName, handleNameChange, newNumber, handleNumberChange, addPerson}) => {
     return (
         <form onSubmit={addPerson}>
             <div>
@@ -133,31 +146,20 @@ const AddPerson = ({persons, newName, handleNameChange, newNumber, handleNumberC
     )
 }
 
-const DeletePerson = ({id, hook}) => {
-    const deleteEvent = (event) => {
-        event.preventDefault()
-        if (window.confirm("Poistetaanko")) {
-            personService
-                .remove(id)
-                .then(
-                    // setPersons(persons.splice(id, 1))
-                    hook
-                )
-        }
-    }
-    return (
-        <button onClick={deleteEvent}>poista</button>
-    )
-}
 
-const Person = ({ person, hook }) => {
+const Person = ({ person, deletePerson }) => {
     
+    const deleteEvent = (event) => {
+        event.preventDefault() 
+        deletePerson(person.id)
+    }
+
     return (
         <p>
-            {person.name}, {person.number} <DeletePerson id={person.id} hook={hook} />
+            {person.name}, {person.number} <button onClick={deleteEvent}>poista</button>
         </p>
     )
-    // 
+    
 }
 
 const Notification = ({ message }) => {
