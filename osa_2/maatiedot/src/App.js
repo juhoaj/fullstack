@@ -5,11 +5,6 @@ import axios from 'axios'
 const App = () => {
     const [search, setSearch] = useState('')
     const [countries, setCountries] = useState([])
-    /*
-    const [newName, setNewName] = useState('')
-    const [newNumber, setNewNumber] = useState('')
-    */
-    
 
    const hook = () => {
     // console.log('effect')
@@ -28,23 +23,6 @@ const App = () => {
         console.log(event.target.value)
         setSearch(event.target.value)
     }
-    /*
-    const addPerson = (event) => {
-        event.preventDefault()
-        const personObject = {
-            name: newName,
-            number: newNumber,
-            id: persons.length + 1,
-        }
-
-        persons.filter(elementti => elementti.name === newName).length > 0
-            ? window.alert(`${newName} on jo luettelossa`)
-            : setPersons(persons.concat(personObject))
-
-        setNewName('')
-        setNewNumber('')
-    }
-    */
 
     return (
         <div>
@@ -130,21 +108,18 @@ const Input = ({ value, onChange, label }) => (
     </div>
 )
 
-
 const List = ({ content }) => (
     <ul>
         {content.map(item =>
             <ListItem
                 content={item.name}
             />
-            
         )}
     </ul>
 )
 
 const ListItem = ({content}) => (
     <li>{content}</li>
-    
 )
 
 export default App
