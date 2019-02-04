@@ -41,7 +41,10 @@ const App = () => {
                 setPersons={setPersons}
             />
             <h2>Numerot</h2>
-            <Persons persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} />
+            <Persons 
+                persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} 
+                hook={hook}
+            />
         </div>
     )
 }
@@ -53,10 +56,11 @@ const Input = ({ value, onChange }) => (
     />
 )
 
-const Persons = ({ persons }) => persons.map(person =>
+const Persons = ({ persons, hook }) => persons.map(person =>
     <Person
         key={person.id}
         person={person}
+        hook={hook}
     />
 )
 
@@ -115,7 +119,7 @@ const AddPerson = ({persons, setPersons}) => {
     )
 }
 
-const DeletePerson = ({id}) => {
+const DeletePerson = ({id, hook}) => {
     const deleteEvent = (event) => {
         event.preventDefault()
         if (window.confirm("Poistetaanko")) {
@@ -123,6 +127,7 @@ const DeletePerson = ({id}) => {
                 .remove(id)
                 .then(
                     // setPersons(persons.splice(id, 1))
+                    hook
                 )
         }
     }
@@ -131,11 +136,11 @@ const DeletePerson = ({id}) => {
     )
 }
 
-const Person = ({ person }) => {
+const Person = ({ person, hook }) => {
     
     return (
         <p>
-            {person.name}, {person.number} <DeletePerson id={person.id}/>
+            {person.name}, {person.number} <DeletePerson id={person.id} hook={hook}/>
         </p>
     )
     // 
