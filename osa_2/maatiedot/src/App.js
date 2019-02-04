@@ -26,7 +26,7 @@ const App = () => {
 
     const handleSearchChange = (event) => {
         console.log(event.target.value)
-        setSearch(event.target.value.toUpperCase())
+        setSearch(event.target.value)
     }
     /*
     const addPerson = (event) => {
@@ -55,7 +55,7 @@ const App = () => {
                 onChange={handleSearchChange}
             />
             <SearchResults
-                results={countries.filter(e => e.name.toUpperCase().includes(search))}
+                results={countries.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))}
             />
 
             

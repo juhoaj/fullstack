@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
 
@@ -11,11 +12,11 @@ const App = () => {
 
    const hook = () => {
     console.log('effect')
-    axios
-        .get('http://localhost:3001/persons')
-        .then(response => {
-            console.log('promise fulfilled')
-            setPersons(response.data)
+    personService
+        .getAll()
+        .then(initialPersons => {
+            // console.log('promise fulfilled')
+            setPersons(initialPersons)
         })
     }
 
@@ -34,7 +35,7 @@ const App = () => {
 
     const handleSearchChange = (event) => {
         // console.log(event.target.value)
-        setSearch(event.target.value.toUpperCase())
+        setSearch(event.target.value)
     }
 
     const addPerson = (event) => {
@@ -57,12 +58,11 @@ const App = () => {
         persons.filter(elementti => elementti.name === newName).length > 0
             ? window.alert(`${newName} on jo luettelossa`)
             // : setPersons(persons.concat(personObject))
-            : axios
-                .post('http://localhost:3001/persons', personObject)
-                .then(response => {
-                    setPersons(persons.concat(response.data))
-                                    })
-
+            : personService
+                .create(personObject)
+                .then(returnedNote => {
+                    setPersons(persons.concat(returnedNote))
+                })
         setNewName('')
         setNewNumber('')
     }
@@ -94,7 +94,7 @@ const App = () => {
                 </div>
             </form>
             <h2>Numerot</h2>
-            <Persons persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search))} />
+            <Persons persons={persons.filter(elementti => elementti.name.toUpperCase().includes(search.toUpperCase()))} />
         </div>
     )
 
