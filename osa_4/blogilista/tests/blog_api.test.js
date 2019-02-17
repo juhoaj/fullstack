@@ -24,6 +24,16 @@ const initialBlogs = [
     },
 ]
 
+const addedBlog = [
+    {
+        title: "First class tests",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+        likes: 10,
+    },
+]
+
+
 beforeEach(async () => {
     await Blog.deleteMany({})
 
@@ -49,10 +59,15 @@ test('blogs are returned as json', async () => {
 
 test('three blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body.length).toBe(initialBlogs.length)
 })
 
+test('after adding a blog four blogs are returned', async () => {
+    let newBlogObject = new Blog(addedBlog[0])
+    await newBlogObject.save()
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+})
 
 afterAll(() => {
     mongoose.connection.close()
