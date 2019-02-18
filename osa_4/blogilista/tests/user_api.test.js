@@ -37,6 +37,10 @@ describe('when there is initially one user at db', async () => {
         
     })
 
+    /*
+
+    4.16
+
     
     test('creation fails with proper statuscode and message if username already taken', async () => {
         const usersAtStart = await helper.usersInDb()
@@ -58,6 +62,8 @@ describe('when there is initially one user at db', async () => {
         const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd.length).toBe(usersAtStart.length)
     })
+
+    */
     
 })
 
