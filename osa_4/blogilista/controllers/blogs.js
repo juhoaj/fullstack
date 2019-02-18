@@ -19,16 +19,12 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.get('/favoriteBlog', async (request, response) => {
     const blogs = await Blog.find({})
-    const suosituin =  blogs.reduce((prev, current)  => {
+    const suosituin = blogs.reduce((prev, current)  => {
         return (prev.likes > current.likes) ? prev : current
-    })  || null
+    }, "")  
 
-    suosituin === null
-        ? response.json({
-            "error": {
-                "message": "no blog found with most"
-              }
-            })
+    suosituin === ""
+        ? response.json({ error:  "No blog found with most likes"  })
         : response.json({
                 title: suosituin.title,
                 autohor: suosituin.author,
