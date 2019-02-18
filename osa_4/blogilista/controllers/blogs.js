@@ -17,6 +17,31 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs.map(blog => blog.toJSON()))
 })
 
+blogsRouter.get('/favoriteBlog', async (request, response) => {
+    const blogs = await Blog.find({})
+    const suosituin =  blogs.reduce((prev, current)  => {
+        return (prev.likes > current.likes) ? prev : current
+    })  || null
+
+    suosituin === null
+        ? response.json({
+            "error": {
+                "message": "no blog found with most"
+              }
+            })
+        : response.json({
+                title: suosituin.title,
+                autohor: suosituin.author,
+                likes: suosituin.likes
+            })
+        ;
+        
+    
+
+
+    
+})
+
 blogsRouter.post('/', async (request, response, next) => {
     const body = request.body
 
