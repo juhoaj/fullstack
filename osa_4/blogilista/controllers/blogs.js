@@ -41,12 +41,25 @@ blogsRouter.post('/', async (request, response, next) => {
 
     try {
         const decodedToken = jwt.verify(token, process.env.SECRET)
+
         if (!token || !decodedToken.id) {
+            console.log('jeba')
             return response.status(401).json({ error: 'token missing or invalid' })
+        }
+        console.log('--------')
+        console.log(request.body.title)
+        console.log(typeof request.body.title)
+
+        if (typeof request.body.title === 'undefined' || typeof request.body.url === 'undefined') {
+            return response.status(400).json({ error: 'no url and/or title' })
         }
 
         const user = await User.findById(decodedToken.id)
 
+        if (typeof request.body.likes === 'undefined') {
+            body.likes = 0
+        }
+       
         const blog = new Blog({
             title: body.title,
             author: body.author,

@@ -34,6 +34,13 @@ describe('when there is initially three blogs saved', async () => {
         expect(response.body.length).toBe(helper.initialBlogs.length)
     })
 
+    /*
+    test('if a POSTed blog has no likes, 0 likes are added to database', async () => {
+        const response = await api.get('/api/blogs')
+        expect(response.body[0].likes).toBe(0)
+    })
+    */
+
     test('after adding a blog four blogs are returned', async () => {
         let newBlogObject = new Blog(helper.addedBlog[0])
         await newBlogObject.save()
@@ -46,8 +53,29 @@ describe('when there is initially three blogs saved', async () => {
         expect(response.body[0].id).toBeDefined();
     })
 
+    /*
+
+    test('a blog without title or url can not be POSTed', async () => {
+        const noTitle =  {
+            author: "Michael Chan",
+            url: "https://reactpatterns.com/",
+        }
+        const noUrl =  {
+            title: "Go To Statement Considered Harmful, vol 6",
+            author: "Michael Chan, or wash he?",
+        }
+        await api
+            .post('/api/blogs')
+            .send(noTitle)
+            .expect(400)
+
+    })
+    */
 
 })
+
+
+
 
 describe('favoriteBlog returns most liked blog', async () => {
     beforeEach(async () => {
