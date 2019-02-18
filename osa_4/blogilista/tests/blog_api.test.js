@@ -6,8 +6,6 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
-
-
 beforeEach(async () => {
     await Blog.deleteMany({})
 
@@ -21,8 +19,6 @@ beforeEach(async () => {
     await blogObject.save()
 
 })
-
-
 
 test('blogs are returned as json', async () => {
     await api
@@ -42,8 +38,6 @@ test('after adding a blog four blogs are returned', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body.length).toBe(helper.initialBlogs.length + 1)
 })
-
-
 
 afterAll(() => {
     mongoose.connection.close()
