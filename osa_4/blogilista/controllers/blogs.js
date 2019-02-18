@@ -31,10 +31,6 @@ blogsRouter.get('/favoriteBlog', async (request, response) => {
                 likes: suosituin.likes
             })
         ;
-        
-    
-
-
     
 })
 

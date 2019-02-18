@@ -40,6 +40,12 @@ describe('when there is initially three blogs saved', async () => {
         const response = await api.get('/api/blogs')
         expect(response.body.length).toBe(helper.initialBlogs.length + 1)
     })
+    
+    test('id, not _id is used in return', async () => {
+        const response = await api.get('/api/blogs')
+        expect(response.body[0].id).toBeDefined();
+    })
+
 
 })
 

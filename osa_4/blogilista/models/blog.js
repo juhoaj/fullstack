@@ -11,7 +11,7 @@ const blogSchema = mongoose.Schema({
         ref: 'User'
     }
 })
-/*
+
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id
@@ -19,5 +19,5 @@ blogSchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
-*/
+
 module.exports = mongoose.model('Blog', blogSchema)
