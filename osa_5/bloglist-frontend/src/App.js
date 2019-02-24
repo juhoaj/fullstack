@@ -20,23 +20,32 @@ const App = () => {
         )
     }, [])
 
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON)
+            setUser(user)
+            blogService.setToken(user.token)
+        }
+    }, [])
+
     const addBlog = (event) => {
         event.preventDefault()
         const blogObject = {
-          title: newTitle,
-          author: newAuthor,
-          url: newURL
+            title: newTitle,
+            author: newAuthor,
+            url: newURL
         }
-    
+
         blogService
-          .create(blogObject).then(returnedNote => {
-            setBlogs(blogs.concat(returnedNote))
-            setNewTitle('')
-            setNewAuthor('')
-            setNewURL('')
-          })
-      }
-    
+            .create(blogObject).then(returnedNote => {
+                setBlogs(blogs.concat(returnedNote))
+                setNewTitle('')
+                setNewAuthor('')
+                setNewURL('')
+            })
+    }
+
     const handleTitleChange = (event) => { setNewTitle(event.target.value) }
     const handleAuthorChange = (event) => { setNewAuthor(event.target.value) }
     const handleURLChange = (event) => { setNewURL(event.target.value) }
@@ -47,6 +56,10 @@ const App = () => {
             const user = await loginService.login({
                 username, password,
             })
+
+            window.localStorage.setItem(
+                'loggedBlogappUser', JSON.stringify(user)
+            )
 
             blogService.setToken(user.token)
             setUser(user)
@@ -102,6 +115,12 @@ const App = () => {
         </form>
     )
 
+    const blogContent = () => (
+        blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+        )
+    )
+
 
     return (
         <div>
@@ -109,13 +128,12 @@ const App = () => {
 
             {user === null ?
                 loginForm() :
-                blogForm()
-            }
-
-
-            {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
-            )}
+                [
+                    blogForm(),
+                    blogContent()
+                ]
+            }       
+            
         </div>
     )
 }
