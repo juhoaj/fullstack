@@ -3,7 +3,8 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import './App.css';
+import Togglable from './components/Togglable'
+import './App.css'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
@@ -14,7 +15,6 @@ const App = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
-    const [addBlogVisible, setAddBlogVisible] = useState(false)
 
     useEffect(() => {
         blogService.getAll().then(blogs =>
@@ -54,11 +54,6 @@ const App = () => {
             }, 5000)
         }
     }
-    /*
-    const handleTitleChange = (event) => { setNewTitle(event.target.value) }
-    const handleAuthorChange = (event) => { setNewAuthor(event.target.value) }
-    const handleURLChange = (event) => { setNewURL(event.target.value) }
-    */
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -86,9 +81,9 @@ const App = () => {
     const handleLogout = async (event) => {
         event.preventDefault()
         try {
-            window.localStorage.removeItem('loggedBlogappUser');
+            window.localStorage.removeItem('loggedBlogappUser')
             setUser(null)
-            setErrorMessage(`kirjauduit sisään onnistuneesti`)
+            setErrorMessage('irjauduit sisään onnistuneesti')
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000)
@@ -104,7 +99,7 @@ const App = () => {
         <form onSubmit={handleLogin}>
             <div>
                 käyttäjätunnus
-          <input
+                <input
                     type="text"
                     value={username}
                     name="Username"
@@ -113,7 +108,7 @@ const App = () => {
             </div>
             <div>
                 salasana
-          <input
+                <input
                     type="password"
                     value={password}
                     name="Password"
@@ -124,36 +119,27 @@ const App = () => {
         </form>
     )
 
-    const logoutForm = () => (
-        <form onSubmit={handleLogout}>
-            <button type="submit">kirjaudu pois</button>
-        </form>
+    const logoutButton = () => (
+
+        <button key="button-1" onClick={handleLogout} type="submit">kirjaudu pois</button>
     )
 
     const blogForm = () => {
-        const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
-        const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
-    
+
         return (
-          <div>
-            <div style={hideWhenVisible}>
-              <button onClick={() => setAddBlogVisible(true)}>Lisää</button>
-            </div>
-            <div style={showWhenVisible}>
-              <BlogForm
-                title={newTitle}
-                author={newAuthor}
-                URL={newURL}
-                handleTitleChange={({ target }) => setNewTitle(target.value)}
-                handleAuthorChange={({ target }) => setNewAuthor(target.value)}
-                handleURLChange={({ target }) => setNewURL(target.value)}
-                handleSubmit={addBlog}
-              />
-              <button onClick={() => setAddBlogVisible(false)}>Peru</button>
-            </div>
-          </div>
+            <Togglable buttonLabel='Lisää bloggaus' key="Togglable">
+                <BlogForm
+                    title={newTitle}
+                    author={newAuthor}
+                    URL={newURL}
+                    handleTitleChange={({ target }) => setNewTitle(target.value)}
+                    handleAuthorChange={({ target }) => setNewAuthor(target.value)}
+                    handleURLChange={({ target }) => setNewURL(target.value)}
+                    handleSubmit={addBlog}
+                />
+            </Togglable>
         )
-      }
+    }
 
     const blogContent = () => (
         blogs.map(blog =>
@@ -180,8 +166,7 @@ const App = () => {
             {user === null ?
                 loginForm() :
                 [
-                    logoutForm(),
-                    <br/>,
+                    logoutButton(),
                     blogForm(),
                     blogContent()
                 ]
