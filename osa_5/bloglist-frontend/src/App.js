@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
-
 import './App.css'
 import  { useField } from './hooks'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
-    const [newTitle, setNewTitle] = useState('')
-    const [newAuthor, setNewAuthor] = useState('')
-    const [newURL, setNewURL] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
-    // const [username, setUsername] = useState('')
-    // const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
 
+    const newTitle = useField('text')
+    const newAuthor = useField('text')
+    const newURL = useField('text')
     const username = useField('text')
     const password = useField('password')
 
@@ -40,17 +38,17 @@ const App = () => {
         event.preventDefault()
 
         const blogObject = {
-            title: newTitle,
-            author: newAuthor,
-            url: newURL
+            title: newTitle.value,
+            author: newAuthor.value,
+            url: newURL.value
         }
         try {
             blogService
                 .create(blogObject).then(returnedNote => {
                     setBlogs(blogs.concat(returnedNote))
-                    setNewTitle('')
-                    setNewAuthor('')
-                    setNewURL('')
+                    newTitle.reset()
+                    newAuthor.reset()
+                    newURL.reset()
                 })
         } catch (exception) {
             setErrorMessage('Bloggauksen lisääminen ei onnistunut, kumma juttu')
@@ -61,9 +59,7 @@ const App = () => {
     }
 
     const handleLogin = async (event) => {
-        console.log('käväsee')
-        console.log(username)
-        console.log(password.value)
+
         event.preventDefault()
         try {
             const user = await loginService.login({
@@ -76,8 +72,10 @@ const App = () => {
 
             blogService.setToken(user.token)
             setUser(user)
-            // setUsername('')
-            // setPassword('')
+            username.reset()
+            password.reset()
+            console.log('käväsee')
+            console.log(password.value)
         } catch (exception) {
             setErrorMessage('käyttäjätunnus tai salasana virheellinen')
             setTimeout(() => {
@@ -127,12 +125,12 @@ const App = () => {
         return (
             <Togglable buttonLabel='Lisää bloggaus' key="Togglable">
                 <BlogForm
-                    title={newTitle}
-                    author={newAuthor}
-                    URL={newURL}
-                    handleTitleChange={({ target }) => setNewTitle(target.value)}
-                    handleAuthorChange={({ target }) => setNewAuthor(target.value)}
-                    handleURLChange={({ target }) => setNewURL(target.value)}
+                    title={newTitle.value}
+                    author={newAuthor.value}
+                    URL={newURL.value}
+                    handleTitleChange={newTitle.onChange}
+                    handleAuthorChange={newAuthor.onChange}
+                    handleURLChange={newURL.onChange}
                     handleSubmit={addBlog}
                 />
             </Togglable>
