@@ -105,11 +105,11 @@ const App = () => {
         <form onSubmit={handleLogin}>
             <div>
                 käyttäjätunnus
-                <input  {...username} />
+                <input  {...username} reset={''} />
             </div>
             <div>
                 salasana
-                <input  {...password} />
+                <input  {...password} reset={''}/>
             </div>
             <button type="submit">kirjaudu</button>
         </form>
