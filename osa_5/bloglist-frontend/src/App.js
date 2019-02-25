@@ -78,7 +78,6 @@ const App = () => {
             setUser(user)
             username.reset()
             password.reset()
-            console.log('käväsee')
             console.log(password.value)
         } catch (exception) {
             setErrorMessage('käyttäjätunnus tai salasana virheellinen')
