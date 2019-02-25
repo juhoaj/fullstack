@@ -6,7 +6,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
 import './App.css'
-import  { useField } from './hooks'
+import { useField } from './hooks'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
@@ -30,7 +30,8 @@ const App = () => {
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
             setUser(user)
-            blogService.setToken(user.token)
+            // blogService.setToken(user.token)
+            blogService.setToken(null)
         }
     }, [])
 
@@ -42,28 +43,32 @@ const App = () => {
             author: newAuthor.value,
             url: newURL.value
         }
-        try {
-            blogService
-                .create(blogObject).then(returnedNote => {
-                    setBlogs(blogs.concat(returnedNote))
-                    newTitle.reset()
-                    newAuthor.reset()
-                    newURL.reset()
-                })
-        } catch (exception) {
-            setErrorMessage('Bloggauksen lisääminen ei onnistunut, kumma juttu')
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
-        }
+
+        blogService
+            .create(blogObject).then(returnedNote => {
+                setBlogs(blogs.concat(returnedNote))
+                newTitle.reset()
+                newAuthor.reset()
+                newURL.reset()
+            })
+
+            .catch(error => {
+                setErrorMessage('Bloggauksen lisääminen kantaan ei onnistunut, kumma juttu')
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 5000)
+                throw error
+            })
+
     }
+
 
     const handleLogin = async (event) => {
 
         event.preventDefault()
         try {
             const user = await loginService.login({
-                username:username.value, password:password.value,
+                username: username.value, password: password.value,
             })
 
             window.localStorage.setItem(
@@ -109,7 +114,7 @@ const App = () => {
             </div>
             <div>
                 salasana
-                <input  {...password} reset={''}/>
+                <input  {...password} reset={''} />
             </div>
             <button type="submit">kirjaudu</button>
         </form>
