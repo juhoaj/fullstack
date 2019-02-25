@@ -30,8 +30,8 @@ const App = () => {
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
             setUser(user)
-            // blogService.setToken(user.token)
-            blogService.setToken(null)
+            blogService.setToken(user.token)
+
         }
     }, [])
 
@@ -59,7 +59,6 @@ const App = () => {
                 }, 5000)
                 throw error
             })
-
     }
 
 
@@ -143,6 +142,8 @@ const App = () => {
     }
 
     const blogContent = () => (
+        blogs.sort(function(a, b){return b.likes - a.likes}),
+        console.log(blogs),
         blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
         )
