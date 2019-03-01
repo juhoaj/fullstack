@@ -26,7 +26,7 @@ const Blog = ({ blog }) => {
     }
 
     return (
-        <div style={blogStyle} onClick={ showHide }>
+        <div title='blog' style={blogStyle} onClick={ showHide }>
             <div >
                 {blog.title} {blog.author}
             </div>
