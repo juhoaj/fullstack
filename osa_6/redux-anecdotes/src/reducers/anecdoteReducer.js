@@ -24,6 +24,7 @@ const anecdoteReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'CREATE_ANECDOTE':
             console.log(action.data)
+            
             return [...state, action.data]
 
         case 'ADD_VOTE':
@@ -52,7 +53,6 @@ export const addVote = (id) => {
 }
 
 export const createAnecdote = (content) => {
-    console.log(content)
     return {
       type: 'CREATE_ANECDOTE',
       data: {
