@@ -9,7 +9,6 @@ const Notification = ({ store }) => {
     const styleHidden = {
         display: 'none'
     }
-    console.log(store.getState().notification)
     return (
         <div style={ store.getState().notification ? styleShow : styleHidden }>
             {store.getState().notification}

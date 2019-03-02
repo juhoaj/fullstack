@@ -1,35 +1,45 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
 
-const AnecdoteList = ({ store }) => {
-
-
-
+const AnecdoteList = (props) => {
     return (
         <div>
             <h2>Anecdotes</h2>
-            {store.getState().anecdotes.sort(function (a, b) { return b.votes - a.votes }).map(anecdote =>
-                <div key={anecdote.id}>
-                    <div>
-                        {anecdote.content}
-                    </div>
-                    <div>
-                        has {anecdote.votes} votes
+            {props.anecdotes
+                .filter(e =>
+                    e.content.includes(props.filter))
+                    .sort(function (a, b) { return b.votes - a.votes })
+                .map(anecdote =>
+                    <div key={anecdote.id}>
+                        <div>
+                            {anecdote.content}
+                        </div>
+                        <div>
+                            has {anecdote.votes} votes
                         <button onClick={() => {
-                            store.dispatch(addVote(anecdote.id), setNotification('jeba'))
-                            store.dispatch(setNotification('Äänestit ' + anecdote.content))
-                            setTimeout(() => {
-                                store.dispatch(clearNotification())
-                            }, 5000)
-                        }}>vote</button>
+                                props.store.dispatch(addVote(anecdote.id), setNotification('jeba'))
+                                props.store.dispatch(setNotification('Äänestit ' + anecdote.content))
+                                setTimeout(() => {
+                                    props.store.dispatch(clearNotification())
+                                }, 5000)
+                            }}>vote</button>
+                        </div>
+                        <br />
                     </div>
-                    <br/>
-                </div>
-            )}
+                )}
         </div>
-        
+
     )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+    return {
+        anecdotes: state.anecdotes,
+        filter: state.filter
+    }
+}
+
+const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+export default ConnectedAnecdoteList
