@@ -19,11 +19,13 @@ const AnecdoteList = (props) => {
                         <div>
                             has {anecdote.votes} votes
                         <button onClick={() => {
-                                props.store.dispatch(addVote(anecdote.id), setNotification('jeba'))
-                                props.store.dispatch(setNotification('Äänestit ' + anecdote.content))
+                                props.addVote(anecdote.id) 
+                                
+                                props.setNotification('Äänestit ' + anecdote.content)
                                 setTimeout(() => {
-                                    props.store.dispatch(clearNotification())
+                                    props.clearNotification()
                                 }, 5000)
+                                
                             }}>vote</button>
                         </div>
                         <br />
@@ -34,12 +36,22 @@ const AnecdoteList = (props) => {
     )
 }
 
+const mapDispatchToProps = {
+    setNotification,
+    clearNotification,
+    addVote
+  }
+
 const mapStateToProps = (state) => {
     return {
         anecdotes: state.anecdotes,
-        filter: state.filter
+        filter: state.filter,
+        notification: state.notification
     }
 }
 
-const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+const ConnectedAnecdoteList = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AnecdoteList)
 export default ConnectedAnecdoteList
