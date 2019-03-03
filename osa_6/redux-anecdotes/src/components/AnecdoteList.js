@@ -10,7 +10,7 @@ const AnecdoteList = (props) => {
             {props.anecdotes
                 .filter(e =>
                     e.content.includes(props.filter))
-                    .sort(function (a, b) { return b.votes - a.votes })
+                .sort(function (a, b) { return b.votes - a.votes })
                 .map(anecdote =>
                     <div key={anecdote.id}>
                         <div>
@@ -19,13 +19,13 @@ const AnecdoteList = (props) => {
                         <div>
                             has {anecdote.votes} votes
                         <button onClick={() => {
-                                props.addVote(anecdote.id) 
-                                
+                                props.addVote(anecdote.id)
+
                                 props.setNotification('Äänestit ' + anecdote.content)
                                 setTimeout(() => {
                                     props.clearNotification()
                                 }, 5000)
-                                
+
                             }}>vote</button>
                         </div>
                         <br />
@@ -40,7 +40,7 @@ const mapDispatchToProps = {
     setNotification,
     clearNotification,
     addVote
-  }
+}
 
 const mapStateToProps = (state) => {
     return {

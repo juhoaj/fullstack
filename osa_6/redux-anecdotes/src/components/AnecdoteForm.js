@@ -2,18 +2,21 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import anecdoteService from '../services/anecdotes'
 
 const NewAnecdote = (props) => {
-
-
-    const addAnecdote = (event) => {
+    const addAnecdote = async (event) => {
         event.preventDefault()
-        props.createAnecdote(event.target.anecdote.value)
-        props.setNotification('Lisäsit seuraavaan viisauden: ' + event.target.anecdote.value)
+        const content = event.target.anecdote.value
+        event.target.anecdote.value = ''
+        const newAnecdote = await anecdoteService.createNew(content)
+        props.createAnecdote(newAnecdote.content)
+
+        props.setNotification('Lisäsit seuraavaan viisauden: ' + newAnecdote.content)
                             setTimeout(() => {
                                 props.clearNotification()
                             }, 5000)
-        event.target.anecdote.value = ''
+        
     }
 
     return (
