@@ -7,7 +7,6 @@ const AnecdoteList = (props) => {
     return (
         <div>
             <h2>Anecdotes</h2>
-            {console.log('jjjeee',props.anecdotes)}
             {props.anecdotes
                 .filter(e =>
                     e.content.includes(props.filter))

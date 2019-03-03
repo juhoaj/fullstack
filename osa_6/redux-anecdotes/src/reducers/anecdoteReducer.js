@@ -37,17 +37,24 @@ export const addVote = (id) => {
     }
 }
 
-export const createAnecdote = (data) => {
-    return {
+
+
+
+export const createAnecdote = content => {
+    return async dispatch => {
+      const newAnecdote = await anecdoteService.createNew(content)
+      dispatch({
         type: 'CREATE_ANECDOTE',
-        data
+        data: newAnecdote,
+      })
     }
-}
+  }
+
+
 
 export const initializeAnecdotes = () => {
     return async dispatch => {
         const anecdotes = await anecdoteService.getAll()
-        console.log('anet', anecdotes)
         dispatch( {
             type: 'INIT_ANECDOTES',
             data: anecdotes,
