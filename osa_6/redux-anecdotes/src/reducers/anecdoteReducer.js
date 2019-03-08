@@ -5,8 +5,6 @@ const anecdoteReducer = (state = [], action) => {
 
     switch (action.type) {
         case 'CREATE_ANECDOTE':
-            console.log(action.data)
-
             return [...state, action.data]
 
         case 'ADD_VOTE':
@@ -30,10 +28,16 @@ const anecdoteReducer = (state = [], action) => {
     }
 }
 
-export const addVote = (id) => {
-    return {
-        type: 'ADD_VOTE',
-        data: { id }
+export const addVote = (id, content, votes) => {
+
+    const newVotes = votes +1
+    console.log('uus',newVotes)
+    return async dispatch => {
+        anecdoteService.update({id:id, content: content, votes:newVotes})
+        dispatch({
+            type: 'ADD_VOTE',
+            data: { id }
+        })
     }
 }
 
