@@ -1,16 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { setNotification} from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
     const vote = (id) => {
         const votedAnecdote = props.visibleAnecdotes.find(e => e.id.includes(id))
         props.addVote(votedAnecdote)
-        props.setNotification('Äänestit ' + votedAnecdote.content)
-            setTimeout(() => {
-                props.clearNotification()
-            }, 5000)
+        props.setNotification(`you voted '${votedAnecdote.content}'`, 10)
     }
     return (
         <div>
@@ -38,7 +35,6 @@ const anecdotesToShow = ({ anecdotes, filter }) => {
 
 const mapDispatchToProps = {
     setNotification,
-    clearNotification,
     addVote
 }
 
