@@ -3,18 +3,22 @@ import { connect } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
 
-const vote = (id, content, votes) => {
-    this.props.addVote(id, content, votes)
-    this.props.setNotification('Äänestit ' + content)
-        setTimeout(() => {
-            this.props.clearNotification()
-        }, 5000)
-}
+
 
 const AnecdoteList = (props) => {
-
-
-
+    const vote = (id, addVote) => {
+        const votedAnecdote = props.visibleAnecdotes.find(e => e.id.includes(id))
+        console.log(votedAnecdote)
+        console.log(votedAnecdote.id)
+        console.log(votedAnecdote.content)
+        console.log(votedAnecdote.votes)
+        props.addVote(votedAnecdote.id, votedAnecdote.content, votedAnecdote.votes)
+        props.setNotification('Äänestit ' + votedAnecdote.content)
+            setTimeout(() => {
+                this.props.clearNotification()
+            }, 5000)
+            
+    }
     return (
         <div>
             <h2>Anecdotes</h2>
