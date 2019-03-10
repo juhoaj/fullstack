@@ -26,15 +26,6 @@ export const clearNotification = () => {
     }
 }
 
-/*
-export const setNotification = (content, time) => {
-    showNotification(content)
-        setTimeout(() => {
-            clearNotification()
-        }, time*100)
-}
-*/
-
 export const setNotification = (content, time) => {
     return async => {
     showNotification(content)
@@ -43,9 +34,5 @@ export const setNotification = (content, time) => {
         }, time*100)
     }
 }
-
-
-
-
 
 export default notificationReducer
