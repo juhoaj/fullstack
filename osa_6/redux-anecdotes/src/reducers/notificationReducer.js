@@ -12,7 +12,6 @@ const notificationReducer = (state = null, action) => {
 }
 
 
-
 export const setNotification = (content) => {
     return {
         type: 'SET_NOTIFICATION',
